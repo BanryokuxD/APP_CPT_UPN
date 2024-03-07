@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'appCPT/css/style2.css' %}">
+    <title>UPN Planes de Trabajo - Login</title>
+</head>
+<body>
+    <div id="loginContainer">
+        <div id="loginBox">
+            <img class="logo-image" src="{% static 'appCPT/images/Ulogo0.png' %}" alt="Ulogo1">
+            <form method="POST">
+                {% csrf_token %} 
+                {{error}}
+                <div class="input-container">
+                    <input type="text" id="username" placeholder="Usuario" name="username" required>
+                    <input type="password" id="password" placeholder="Contraseña" name="password" required>
+                </div>
+                <button type="submit">Iniciar sesión</button>
+            </form>
+            <form onsubmit="handleLogin(event)">
+                <!-- Contenido del segundo formulario -->
+            </form>
+        </div>
+    </div>
+    <script src=""></script>
+</html>

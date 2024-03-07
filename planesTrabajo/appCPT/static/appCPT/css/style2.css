@@ -1,0 +1,44 @@
+#loginContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #f8fbfe, #daeceb);
+}
+
+#loginBox {
+    text-align: center;
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    max-width: 400px; /* Ajusta el ancho máximo según tu preferencia */
+    width: 100%; /* Garantiza que el cuadro no se extienda más allá del ancho máximo */
+}
+
+.logo-image {
+    width: 130px;
+    height: 120px;
+    margin-bottom: 25px;
+}
+
+.input-container {
+    margin-bottom: 5px;
+}
+
+.input-container input {
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

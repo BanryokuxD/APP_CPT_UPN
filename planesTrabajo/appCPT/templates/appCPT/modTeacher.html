@@ -1,0 +1,388 @@
+{% load static %}
+<!DOCTYPE html>
+<!--Lenguaje de la pagina-->
+<html lang="es">
+
+<head>
+    <!--Titulo de la pagina-->
+    <title>Módulo Docente</title>
+    <!--Estilos bootsrap-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!--Estilos CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'appCPT/css/style1.css' %}">
+</head>
+
+<body>
+    {% if user.is_authenticated %}
+    <header class="top-bar">
+        <img src="{% static 'appCPT/images/Ulogo2.png' %}" alt="Ulogo2">
+        <div class="module-name">
+            Módulo Docente - Docente, {{ user.first_name }} {{ user.last_name }}
+        </div>
+    </header>
+    {% endif %}
+
+    <div class="col-md-4">
+        <div class="form-container form-box perfil-usuario">
+            <h2 class="form-title">Perfil Docente</h2>
+            <!-- Contenido del perfil de usuario -->
+            <p>Nombre: {{ user.first_name }}</p>
+            <p>Apellido: {{ user.last_name }}</p>
+            <p>Cédula: {{ user.cedula }}</p>
+            <p>Departamento: {{ user.departamento.descripcion }}</p>
+            <p>Total de Horas Acumuladas: {{ total_horas_acumuladas }}</p>
+            <button onclick="window.location.href='/cambiar-contrasena/'" class="btn btn-light">Editar
+                Contraseña</button>
+            <a href="{% url 'logout' %}" class="btn btn-light">Cerrar Sesión</a>
+        </div>
+    </div>
+    <div class="container container-center">
+        <div class="row ">
+            <div class="col-md-8 ">
+                <div class="form-container form-box">
+                    <h2 class="form-title">Actividad Docente</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-content">
+                            <div class="form-group">
+                                {{ actividad_docente_form.curso.label_tag }}
+                                {{ actividad_docente_form.curso }}
+                            </div>
+
+                            <div class="curso-container">
+                                <div class="curso-detalles">
+                                    <p class="detalles-curso-mensaje">Detalles de curso</p>
+                                    <!-- Detalles del curso seleccionado (Código, horario y grupo) -->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                {{ actividad_docente_form.horas_curso.label_tag }}
+                                {{ actividad_docente_form.horas_curso }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ actividad_docente_form.proyecto_curricular.label_tag }}
+                                {{ actividad_docente_form.proyecto_curricular }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ actividad_docente_form.centro_costos.label_tag }}
+                                {{ actividad_docente_form.centro_costos }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ actividad_docente_form.nivel.label_tag }}
+                                {{ actividad_docente_form.nivel }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ actividad_docente_form.tutorias_estudiantes_horas.label_tag }}
+                                {{ actividad_docente_form.tutorias_estudiantes_horas }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ actividad_docente_form.preparacion_horas.label_tag }}
+                                {{ actividad_docente_form.preparacion_horas }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ actividad_docente_form.evaluacion_horas.label_tag }}
+                                {{ actividad_docente_form.evaluacion_horas }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ actividad_docente_form.numero_estudiantes.label_tag }}
+                                {{ actividad_docente_form.numero_estudiantes }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ actividad_docente_form.profesor.label_tag }}
+                                {{ actividad_docente_form.profesor }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ actividad_docente_form.actividad_id.label_tag }}
+                                {{ actividad_docente_form.actividad_id }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ actividad_docente_form.tipo_actividad_docente.label_tag }}
+                                {{ actividad_docente_form.tipo_actividad_docente }}
+                            </div>
+
+                            <div class="form-group">
+                                {{ actividad_docente_form.periodo_academico.label_tag }}
+                                {{ actividad_docente_form.periodo_academico }}
+                            </div>
+
+                        </div>
+                        <button type="submit" name="actividad_docente_submit" class="btn btn-light">Registrar Actividad
+                            Docente</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-container form-box actividad-registrada1">
+                    <h2 class="form-title">Actividades Docentes Registradas</h2>
+                    <!-- Formulario de filtrado por período académico -->
+                    <form method="post">
+                        {% csrf_token %}
+                        <label for="periodo_academico">Filtrar por Periodo Académico:</label>
+                        <select name="periodo_academico" id="periodo_academico">
+                            <option value="" {% if not selected_periodo_academico %}selected{% endif %}>Todos</option>
+                            {% for periodo_academico in periodos_academicos %}
+                                <option value="{{ periodo_academico.id }}" {% if periodo_academico.id == selected_periodo_academico %}selected{% endif %}>
+                                    {{ periodo_academico.descripcion }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit">Filtrar</button>
+                    </form>
+                    <div class="actividades-container1">
+                        {% if actividades_docentes %}
+                        <ul class="actividades-registradas-list">
+                            {% for actividad_docente in actividades_docentes %}
+                            <li class="actividades-registradas-item">
+                                <!-- Contenido de cada actividad -->
+                                <p>Código del curso: {{ actividad_docente.curso.codigo }}</p>
+                                <p>Nombre del curso: {{ actividad_docente.curso.nombre }}</p>
+                                <p>Horas/Sem curso: {{ actividad_docente.horas_curso }}</p>
+                                <p>Horas/Sem Evaluación de actividades: {{ actividad_docente.evaluacion_horas }}</p>
+                                <p>Horas/sem Tutoría a estudiantes: {{ actividad_docente.tutorias_estudiantes_horas }}</p>
+                                <p>Horas/sem Preparación: {{ actividad_docente.preparacion_horas }}</p>
+                                <p>Nivel: {{ actividad_docente.nivel.descripcion }}</p>
+                                <p>Proyecto curricular: {{ actividad_docente.proyecto_curricular.descripcion }}</p>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <p>No se han registrado actividades docentes.</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Total horas -->
+                    <div class="total-horas">
+                        <h3>Total Horas: {{ total_horas }}</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulario de actividad investigativa -->
+            <div class="col-md-8">
+                <div class="form-container form-box ">
+                    <h2 class="form-title">Actividad Investigativa</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-content">
+                            {{ actividad_investigativa_form.as_p }}
+                        </div>
+                        <button type="submit" name="actividad_investigativa_submit" class="btn btn-light">Registrar
+                            Actividad Investigativa</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-container form-box actividad-registrada2">
+                    <h2 class="form-title">Actividades Investigativas Registradas</h2>
+                    
+                    <!-- Actividades investigativas registradas -->   
+                    <div class="actividades-container2">
+                        {% if actividades_investigativas %}
+                            <ul class="actividades-registradas-list">
+                                {% for actividad_investigativa in actividades_investigativas %}
+                                    <li class="actividades-registradas-item">
+                                        <!-- Contenido de cada actividad investigativa -->
+                                        <p>Tipo: {{ actividad_investigativa.tipo_actividad_investigativa }}</p>
+                                        <p>Función: {{ actividad_investigativa.funcion }}</p>
+                                        <p>Acta Facultad: {{ actividad_investigativa.acta_facultad }}</p>
+                                        <p>Título del Proyecto: {{ actividad_investigativa.titulo_proyecto }}</p>
+                                        <p>Nivel: {{ actividad_investigativa.nivel.descripcion }}</p>
+                                        <p>Proyecto Curricular: {{ actividad_investigativa.proyecto_curricular.descripcion }}</p>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p>No se han registrado actividades investigativas.</p>
+                        {% endif %}
+                    </div>
+            
+                    <!-- Nuevo cuadro para total horas de actividades investigativas -->
+                    <div class="total-horas">
+                        <h3>Total Horas Investigativas: {{ total_horas_investigativas }}</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulario de actividad Gestión -->
+            <div class="col-md-8 ">
+                <div class="form-container form-box">
+                    <h2 class="form-title">Actividad Gestión</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-content">
+                            {{ actividad_gestion_form.as_p }}
+                        </div>
+                        <button type="submit" name="actividad_gestion_submit" class="btn btn-light">Registrar
+                            Actividad
+                            de Gestión</button>
+                    </form>
+                </div>
+            </div>
+            <!--Actividades de Gestión Registradas -->
+            <div class="col-md-4">
+                <div class="form-container form-box actividad-registrada3">
+                    <h2 class="form-title">Actividades de Gestión Registradas</h2>
+                    <!-- Formulario de filtrado por período académico -->
+                    <div class="actividades-container3">
+                        {% if actividades_gestion %}
+                        <ul class="actividades-registradas-list">
+                            {% for actividad_gestion in actividades_gestion %}
+                            <li class="actividades-registradas-item">
+                                <!-- Contenido de cada actividad de gestión -->
+                                <p>Actividad de Gestión: {{ actividad_gestion.actividad_gestion }}</p>
+                                <p>Horas semana: {{ actividad_gestion.horas_semana }}</p>
+                                <!-- Agrega más campos según sea necesario -->
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <p>No se han registrado actividades de gestión.</p>
+                        {% endif %}
+                    </div>
+                    <!-- Nuevo cuadro para total de horas de actividades de gestión -->
+                    <div class="total-horas">
+                        <h3>Total Horas de Gestión: {{ total_horas_gestion }}</h3>
+                    </div>
+                </div>
+            </div>
+
+            
+            <!-- Formulario de actividad Gestión -->
+            <div class="col-md-8 ">
+                <div class="form-container form-box">
+                    <h2 class="form-title">Actividad Extensión</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-content">
+                            {{ actividad_extension_form.as_p }}
+                        </div>
+                        <button type="submit" name="actividad_extension_submit" class="btn btn-light">Registrar
+                            Actividad de Extensión</button>
+                    </form>
+                </div>
+            </div>
+            <!-- Actividades de Extensión Registradas -->
+            <div class="col-md-4 vistaCursos">
+                <div class="form-container form-box actividad-registrada4">
+                    <h2 class="form-title">Actividades de Extensión Registradas</h2>
+                    <!-- Formulario de filtrado por período académico -->
+                    <div class="actividades-container4">
+                        {% if actividades_extension %}
+                        <ul class="actividades-registradas-list">
+                            {% for actividad_extension in actividades_extension %}
+                            <li class="actividades-registradas-item">
+                                <!-- Contenido de cada actividad de extensión -->
+                                <p>Título: {{ actividad_extension.titulo }}</p>
+                                <!-- Agrega más campos según sea necesario -->
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <p>No se han registrado actividades de extensión.</p>
+                        {% endif %}
+                    </div>
+                    <!-- Nuevo cuadro para total de horas de actividades de extensión -->
+                    <div class="total-horas">
+                        <h3>Total Horas de Extensión: {{ total_horas_extension }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function () {
+            var detallesContainer = $('.curso-detalles');
+            var detallesMensaje = $('.detalles-curso-mensaje');
+            var horasCursoInput = $('#id_horas_curso');
+
+            $('#id_curso').change(function () {
+                var cursoId = $(this).val();
+
+                if (cursoId) {
+                    $.ajax({
+                        url: '/obtener_detalles_curso/',
+                        type: 'GET',
+                        data: {
+                            'curso_id': cursoId
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                            if (data) {
+                                var detallesHTML = '<p>Código: ' + data.codigo + '</p>' +
+                                    '<p>Horario: ' + data.horario + '</p>' +
+                                    '<p>Grupo: ' + data.grupo + '</p>' +
+                                    '<p>Número de Horas: ' + data.numero_horas + '</p>';
+                                detallesContainer.html(detallesHTML);
+                                detallesMensaje.hide();
+
+                                // Actualizamos el valor del campo de horas del curso
+                                horasCursoInput.val(data.numero_horas);
+                            } else {
+                                detallesContainer.empty();
+                                detallesMensaje.show();
+
+                                // Restauramos el valor del campo de horas del curso
+                                horasCursoInput.val(0);
+                            }
+                        }
+                    });
+                } else {
+                    detallesContainer.empty();
+                    detallesMensaje.show();
+
+                    // Restauramos el valor del campo de horas del curso
+                    horasCursoInput.val(0);
+                }
+            });
+
+            function cargarCursosRegistrados() {
+                $.ajax({
+                    url: '/obtener_cursos_registrados/',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data && data.length > 0) {
+                            var cursosHTML = '<p>Cursos Registrados:</p><ul>';
+                            for (var i = 0; i < data.length; i++) {
+                                cursosHTML += '<li>' + data[i].nombre + ' - ' + data[i].codigo + ' - ' + data[i].horario + '</li>';
+                            }
+                            cursosHTML += '</ul>';
+                            $('.cursos-registrados').html(cursosHTML);
+                            $('.detalles-curso-mensaje').hide();
+                        } else {
+                            $('.cursos-registrados').empty();
+                            $('.detalles-curso-mensaje').show();
+                        }
+                    }
+                });
+            }
+
+            // Cargar cursos registrados al cargar la página
+            cargarCursosRegistrados();
+
+            // Cargar cursos registrados al cambiar el curso seleccionado
+            $('#id_curso').change(function () {
+                var cursoId = $(this).val();
+                if (cursoId) {
+                    // Aquí puedes agregar lógica adicional si es necesario
+                } else {
+                    // Si no se selecciona ningún curso, cargar cursos registrados
+                    cargarCursosRegistrados();
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

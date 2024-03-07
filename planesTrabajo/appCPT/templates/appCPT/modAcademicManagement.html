@@ -1,0 +1,165 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <title>Gestión Académica</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'appCPT/css/style4.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    {% if user.is_authenticated %}
+    <header class="top-bar">
+        <img src="{% static 'appCPT/images/Ulogo2.png' %}" alt="Ulogo2">
+        <div class="module-name">
+            Módulo Gestión Académica, {{ user.first_name }} {{ user.last_name }}
+        </div>
+        <div class="logout-buttons">
+            <a href="{% url 'logout' %}" class="btn btn-light">Cerrar Sesión</a>
+            <button onclick="window.location.href='/cambiar-contrasena/'" class="btn btn-light">Editar</button>
+        </div>
+    </header>
+
+    <div class="container-center">
+
+        <div class="row ">
+            <div class="col-md-6 ">
+                <div class="form-container form-box">
+                    <h2 class="form-title">Registrar Usuario</h2>
+                    <form method="post" action="{% url 'registro_usuario' %}" class="form-content">
+                        {% csrf_token %}
+                        {{ usuario_form.as_p }}
+                        <button type="submit">Registrar Usuario</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-container form-box1 usuariosRegistrados">
+                    <h2 class="form-title">Usuarios Registrados</h2>
+                    <table class="table">
+                        <!-- Agregar tabla para mostrar usuarios -->
+                        <thead>
+                            <tr>
+                                <th>Cédula</th>
+                                <th>Departamento</th>
+                                <th>Facultad</th>
+                                <th>Rol</th>
+                                <!-- Agregar más columnas si es necesario -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for usuario in usuarios_registrados %}
+                            <tr>
+                                <td>{{ usuario.cedula }}</td>
+                                <td>{{ usuario.departamento }}</td>
+                                <td>{{ usuario.facultad }}</td>
+                                <td>{{ usuario.rol }}</td>
+                                <!-- Agregar más columnas si es necesario -->
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+   
+
+
+        <div class="row ">
+            <div class="col-md-6 ">
+                <div class="form-container form-box">
+                    <h2 class="form-title">Registrar Curso</h2>
+                    <form method="post" action="{% url 'academic_management' %}" class="form-content">
+                        {% csrf_token %}
+                        {{ curso_form.as_p }}
+                        <button type="submit">Registrar Curso</button>
+                    </form>
+                </div>
+            </div>
+            
+
+            <div class="col-md-6">
+                <div class="form-container form-box1 cursosRegistrados">
+                    <h2 class="form-title">Cursos Registrados</h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Código</th>
+                                <th>Número de Horas</th>
+                                <th>Nivel</th>
+                                <th>Proyecto Curricular</th>
+                                <th>Grupo</th>
+                                <th>Semestre</th>
+                                <th>Estado</th>
+                                <th>Horario</th>
+                                <th>Departamento</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for curso in cursos_registrados %}
+                            <tr>
+                                <td>{{ curso.nombre }}</td>
+                                <td>{{ curso.codigo }}</td>
+                                <td>{{ curso.numero_horas }}</td>
+                                <td>{{ curso.nivel }}</td>
+                                <td>{{ curso.proyecto_curricular }}</td>
+                                <td>{{ curso.grupo }}</td>
+                                <td>{{ curso.semestre }}</td>
+                                <td>{{ curso.estado }}</td>
+                                <td>{{ curso.horario }}</td>
+                                <td>{{ curso.departamento.descripcion }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+                                        data-target="#modalEditarCurso-{{ curso.id }}">
+                                        Editar
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% for curso in cursos_registrados %}
+    <div class="modal fade" id="modalEditarCurso-{{ curso.id }}" tabindex="-1" role="dialog"
+        aria-labelledby="modalEditarCursoLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEditarCursoLabel">Editar Curso - {{ curso.nombre }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="{% url 'academic_management' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="curso_id" value="{{ curso.id }}">
+                        {% for field in curso_form %}
+                            <div class="form-group">
+                                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                                {{ field }}
+                            </div>
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    {% endfor %}
+
+    {% endif %}
+</body>
+
+</html>

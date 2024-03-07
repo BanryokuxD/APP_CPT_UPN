@@ -1,0 +1,213 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+.top-bar {
+    background-color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px 0;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px; /* Agregamos un margen inferior */
+}
+
+img {
+    margin-left: 20px;
+    width: 300px;
+    height: 80px;
+}
+
+.module-name {
+    font-weight: bold;
+    font-size: 30px;
+    margin-left: 350px;
+}
+
+.logout-link:hover {
+    background-color: #274e8e;
+}
+
+.form-box {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: white;
+}
+
+.form-title {
+    background-color: #244568; /* Color azul */
+    color: white; /* Texto en color blanco */
+    padding: 20px; /* Ajusta el espaciado interior según tus preferencias */
+    margin: 0 0 40px 0; /* Margen inferior de 40px */
+    width: 100%; /* Ancho del 100% para que ocupe todo el contenedor */
+}
+
+.curso-container {
+    padding: 30px;
+    margin-bottom: 20px;
+    margin-left: 4px;
+    background-color: #F0F8FF;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Efecto sombra 3D */
+}
+/* En tu archivo CSS */
+.container-center {
+    margin-left: auto;
+    margin-right: 900px;
+    max-width: 1200px; /* O cualquier otro valor máximo que desees */
+}
+
+
+.curso-container #id_curso,
+.curso-container #id_horas_curso,
+.curso-container .curso-detalles {
+    border: 2px solid #007BFF;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #F0F8FF;
+}
+
+.form-content {
+    margin-bottom: 20px; /* Ajusta el margen inferior según tus preferencias */
+    width: 100%; /* Ancho del 100% para que ocupe todo el contenedor */
+    max-width: 600px; /* Establece un ancho máximo si lo deseas */
+    margin-left: 0; /* Ajuste para alinear a la izquierda */
+}
+
+.form-content input {
+    width: 100%; /* Ancho del 100% para que ocupe todo el contenedor */
+    padding: 6px; /* Ajusta el relleno según tus preferencias */
+    margin-bottom: 6px; /* Espaciado inferior entre los campos de entrada */
+    box-sizing: border-box; /* Incluye el relleno y el borde en el ancho total del elemento */
+}
+
+.perfil-usuario {
+    max-width: 200px;  /* Ajusta el ancho máximo según tus necesidades */
+    margin-right: 10px;  /* Agrega un margen derecho opcional */
+}
+
+
+
+.custom-btn {
+    background-color: #244568;
+    color: #ffffff;  /* Color del texto en el botón */
+    /* Puedes agregar más estilos según tus necesidades */
+}
+
+
+.curso-detalles-hidden {
+    display: none;
+}
+
+.perfil-usuario {
+    max-width: 2000px; /* Ajusta el ancho máximo según tus necesidades */
+    margin-right: -1000px;
+}
+
+.actividad-registrada1 {
+    max-width: 680px; /* Ajusta el ancho máximo según tus necesidades */
+    margin-right: -800px;
+    height: 1030px; 
+    
+    
+}
+
+.actividad-registrada2 {
+    max-width: 680px; /* Ajusta el ancho máximo según tus necesidades */
+    margin-right: -800px;
+    height: 840px; 
+    
+}
+.actividad-registrada3 {
+    max-width: 680px;; /* Ajusta el ancho máximo según tus necesidades */
+    margin-right: -800px;
+    height: 500px; 
+    
+}
+.actividad-registrada4 {
+    max-width: 680px;; /* Ajusta el ancho máximo según tus necesidades */
+    margin-right: -800px;
+    height: 580px; 
+    
+}
+
+/* En tu archivo CSS */
+.actividades-container1 {
+    max-height: 700px; /* Ajusta la altura máxima según sea necesario */
+    overflow-y: auto; /* Añade una barra de desplazamiento si el contenido excede la altura máxima */
+    margin-bottom: 20px; /* Añade un margen inferior para separar del cuadro de Total Horas */
+}
+
+.actividades-container2 {
+    max-height: 500px; /* Ajusta la altura máxima según sea necesario */
+    overflow-y: auto; /* Añade una barra de desplazamiento si el contenido excede la altura máxima */
+    margin-bottom: 20px; /* Añade un margen inferior para separar del cuadro de Total Horas */
+}
+.actividades-container3 {
+    max-height: 400px; /* Ajusta la altura máxima según sea necesario */
+    overflow-y: auto; /* Añade una barra de desplazamiento si el contenido excede la altura máxima */
+    margin-bottom: 20px; /* Añade un margen inferior para separar del cuadro de Total Horas */
+}
+.actividades-container4 {
+    max-height: 500px; /* Ajusta la altura máxima según sea necesario */
+    overflow-y: auto; /* Añade una barra de desplazamiento si el contenido excede la altura máxima */
+    margin-bottom: 20px; /* Añade un margen inferior para separar del cuadro de Total Horas */
+}
+
+.actividades-registradas-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0; /* Asegúrate de quitar cualquier margen que pueda afectar la apariencia */
+}
+
+.actividades-registradas-item {
+    border: 1px solid #007BFF;
+    margin-bottom: 10px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.7);
+}
+
+.total-horas {
+    border: 1px solid #007BFF;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.7);
+    margin-top: 10px;
+}
+
+
+
+
+@media screen and (max-width: 768px) {
+    .top-bar {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    img {
+        margin: 0;
+    }
+
+    .module-name {
+        margin: 10px 0;
+    }
+
+    .details-container {
+        margin-right: 0;
+        width: 100%;
+    }
+
+    .details {
+        width: 90%;
+        margin: 10px auto;
+        padding: 10px;
+    }
+
+    .logout-link {
+        position: static;
+        margin-top: 20px;
+    }
+}

@@ -1,0 +1,24 @@
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.form-box {
+    display: flex;
+    align-items: center;
+}
+
+.form-content {
+    padding: 20px;
+}
+
+.image-container {
+    margin-left: 20px; /* Ajusta el margen según sea necesario */
+}
+
+.image-container img {
+    max-width: 100%;
+    height: auto;
+}

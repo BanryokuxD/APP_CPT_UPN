@@ -1,0 +1,39 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Cambiar Contraseña</title>
+     <!-- Estilos CSS -->
+     <link rel="stylesheet" type="text/css" href="{% static 'appCPT/css/style1.css' %}">
+     <link rel="stylesheet" type="text/css" href="{% static 'appCPT/css/style3.css' %}">
+   
+</head>
+<body>
+    <header class="top-bar">
+        <img src="{% static 'appCPT/images/Ulogo2.png' %}" alt="Ulogo2">
+        <div class="module-name">
+            Módulo Docente - Cambio de Contraseña
+        </div>
+    </header>
+
+    <div class="form-container">
+        <div class="form-box">
+            <div class="form-content">
+                <h2>Cambiar Contraseña</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit">Guardar Cambios</button>
+                </form>
+            </div>
+
+            <!-- Agrega un div para la imagen a la derecha del formulario -->
+            <div class="image-container">
+                <img src="{% static 'appCPT/images/Candado.jpg' %}" alt="Imagen de fondo">
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

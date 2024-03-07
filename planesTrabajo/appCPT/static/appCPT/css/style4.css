@@ -1,0 +1,137 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+.top-bar {
+    background-color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px 0;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px; /* Agregamos un margen inferior */
+}
+
+img {
+    margin-left: 20px;
+    width: 300px;
+    height: 80px;
+}
+
+.module-name {
+    font-weight: bold;
+    font-size: 30px;
+    margin-left: 350px;
+}
+
+.form-box {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin-bottom: 10px; /* Reducimos el margen inferior */
+    background-color: white;
+    width: 300px; /* Define el ancho del contenedor del formulario */
+}
+
+.form-box1 {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    margin-bottom: 10px; /* Reducimos el margen inferior */
+    background-color: white;
+    width: 1200px; /* Define el ancho del contenedor del formulario */
+} 
+
+.form-title {
+    background-color: #244568; /* Color azul */
+    color: white; /* Texto en color blanco */
+    padding: 15px; /* Ajusta el espaciado interior según tus preferencias */
+    margin: 0 0 20px 0; /* Margen inferior de 20px */
+    width: 100%; /* Ancho del 100% para que ocupe todo el contenedor */
+}
+
+.form-content p {
+    margin-bottom: 10px; /* Reducimos el espacio entre el formulario y los párrafos */
+}
+
+.form-content label {
+    font-weight: bold;
+    display: block; /* Para que las etiquetas estén en una línea separada */
+    margin-bottom: 5px; /* Espaciado inferior entre las etiquetas */
+}
+
+.form-content input[type="text"],
+.form-content input[type="number"],
+.form-content select {
+    width: calc(100% - 30px); /* Ancho del campo de entrada, teniendo en cuenta el espacio para el borde */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 16px;
+    margin-bottom: 10px; /* Espaciado inferior entre los campos de entrada */
+}
+
+/* Estilos para el botón de enviar */
+.form-content button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.container-center {
+    margin: 0; /* Elimina el margen izquierdo y derecho */
+    max-width: 600px; /* O cualquier otro valor máximo que desees */
+}
+
+
+.cursosRegistrados {
+    max-height: 1115px; 
+    overflow-y: auto;
+}
+@media screen and (max-width: 768px) {
+    .top-bar {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    img {
+        margin: 0;
+    }
+
+    .module-name {
+        margin: 10px 0;
+    }
+
+    .details-container {
+        margin-right: 0;
+        width: 100%;
+    }
+
+    .details {
+        width: 90%;
+        margin: 10px auto;
+        padding: 10px;
+    }
+
+    .logout-link {
+        position: static;
+        margin-top: 20px;
+    }
+
+    .form-content input[type="text"],
+    .form-content input[type="number"],
+    .form-content select {
+        width: 100%;
+    }
+
+    .form-box {
+        width: 100%; /* Ajusta el ancho al 100% en dispositivos móviles */
+    }
+}
