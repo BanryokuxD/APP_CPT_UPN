@@ -1,4 +1,5 @@
 from telnetlib import AUTHENTICATION
+from tkinter.ttk import Style
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
@@ -290,6 +291,176 @@ def academic_management(request, curso_id=None):
     }
     return render(request, 'appCPT/modAcademicManagement.html', context)
 
-    
+
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Spacer, Paragraph
+from reportlab.lib.units import inch
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
+from .models import ActividadDocente, ActividadInvestigativa, ActividadGestion
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+
+# Función para dividir el contenido de las celdas en partes más pequeñas y unirlas con saltos de línea
+def split_and_join_content(content):
+    max_length = 16  # Longitud máxima de cada línea
+    parts = [content[i:i + max_length] for i in range(0, len(content), max_length)]  # Divide el contenido en partes de longitud máxima
+    return '\n'.join(parts)  # Une las partes con saltos de línea
+
+def split_and_join_contenttwo(content):
+    max_length = 15  # Longitud máxima de cada línea
+    parts = [content[i:i + max_length] for i in range(0, len(content), max_length)]  # Divide el contenido en partes de longitud máxima
+    return '\n'.join(parts)  # Une las partes con saltos de línea
+
+def split_and_join_contenttree(content):
+    max_length = 28  # Longitud máxima de cada línea
+    parts = [content[i:i + max_length] for i in range(0, len(content), max_length)]  # Divide el contenido en partes de longitud máxima
+    return '\n'.join(parts)  # Une las partes con saltos de línea
+
+# Define la vista para generar el reporte PDF
+def generar_reporte_pdf(request):
+
+    # Obtener todos los datos de las tablas
+    actividades_docentes = ActividadDocente.objects.all()
+    actividades_investigativas = ActividadInvestigativa.objects.all()
+    actividades_gestion = ActividadGestion.objects.all()
+
+    # Crear el objeto HttpResponse con el tipo de contenido PDF
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="Reporte de Actividades.pdf"'
+
+    # Crear el documento PDF usando el objeto HttpResponse como su "archivo"
+    doc = SimpleDocTemplate(response, pagesize=letter, rightMargin=30, leftMargin=30, topMargin=30, bottomMargin=30)
+    elements = []
+
+    # Crear estilo para el título centrado
+    title_style = ParagraphStyle(name='TitleStyle', fontSize=16, alignment=1)
+
+    # Agregar datos de actividades docentes al PDF
+    data_docentes = [['Código Curso', 'Nombre Curso', 'H/Sem curso', 'H/Sem Evaluación Actividades',
+                      'H/sem Tutoría Estudiantes', 'H/sem Preparación', 'Nivel', 'Proyecto curricular']]
+
+    for actividad in actividades_docentes:
+        data_docentes.append([
+            actividad.curso.codigo,
+            split_and_join_content(actividad.curso.nombre),
+            actividad.horas_curso,
+            actividad.tutorias_estudiantes_horas,
+            actividad.preparacion_horas,
+            actividad.evaluacion_horas,
+            actividad.nivel.descripcion,
+            split_and_join_contenttwo(actividad.proyecto_curricular.descripcion)  # Aplica la función a la celda del proyecto curricular
+        ])
+
+    # Agregar datos de actividades investigativas al PDF
+    data_investigativas = [['Tipo de actividad', 'Función', 'Acta Facultad', 'Título Proyecto',
+                            'Nivel', 'Proyecto Curricular', 'Horas Semanales']]
+
+    for actividad in actividades_investigativas:
+        data_investigativas.append([
+            split_and_join_content(actividad.tipo_actividad_investigativa),
+            actividad.funcion,
+            actividad.acta_facultad,
+            split_and_join_contenttree(actividad.titulo_proyecto),
+            actividad.nivel.descripcion,
+            split_and_join_content(actividad.proyecto_curricular.descripcion),
+            actividad.horas_semanales
+        ])
+
+    # Agregar datos de actividades de gestión al PDF
+    data_gestion = [['Actividad de gestión', 'Centro de costos', 'Profesor', 'Horas semanales']]
+
+    for actividad in actividades_gestion:
+        data_gestion.append([
+            actividad.actividad_gestion,
+            actividad.centro_costos.descripcion,
+            actividad.profesor.usuario.username,
+            actividad.horas_semana
+        ])
+
+    # Dividir las cabeceras en múltiples líneas y combinarlas en un solo párrafo
+    header_docentes = ['\n'.join(col.split()) for col in data_docentes[0]]
+    header_investigativas = ['\n'.join(col.split()) for col in data_investigativas[0]]
+    header_gestion = ['\n'.join(col.split()) for col in data_gestion[0]]
+
+    # Reemplazar las cabeceras originales con las nuevas
+    data_docentes[0] = header_docentes
+    data_investigativas[0] = header_investigativas
+    data_gestion[0] = header_gestion
+
+    # Crear las tablas con los datos
+    table_docentes = Table(data_docentes, repeatRows=1)
+    table_investigativas = Table(data_investigativas, repeatRows=1)
+    table_gestion = Table(data_gestion, repeatRows=1)
+
+    # Estilo para ajustar el ancho de las columnas
+    style = TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0),'#244568'),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('VALIGN', (0, 0), (-1, 0), 'MIDDLE'),  # Centrar verticalmente la primera fila
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.white),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ('TOPPADDING', (0, 0), (-1, 0), 12)  # Ajuste de la altura de la primera fila
+    ])
+
+    # Ajustar el ancho de las columnas automáticamente
+    # Define el ancho de cada columna manualmente
+    table_docentes._argW = [0.8 * inch, 1.5 * inch, 0.9* inch, 0.9 * inch, 0.9* inch, 0.9 * inch, 0.9* inch, 1.2 * inch]
+    table_investigativas._argW = [1.2 * inch, 0.9 * inch,0.9 * inch, 2 * inch,0.9 * inch, 1.2 * inch, 0.9 * inch] 
+    table_gestion._argW = [1.5 * inch] * len(data_gestion[0])
+
+    table_docentes.setStyle(style)
+    table_investigativas.setStyle(style)
+    table_gestion.setStyle(style)
+
+    # Configurar el espaciado interno de las celdas para evitar que las palabras superen los límites de la tabla
+    style_body = getSampleStyleSheet()['BodyText']
+    style_body.alignment = 1  # Alineación centrada
+    style_body.wordWrap = 'CJK'  # Espaciado entre palabras mejorado
+
+    for row in data_docentes:
+        for i, cell in enumerate(row):
+            # Convertir el contenido de la celda a una cadena de texto
+            row[i] = str(cell)
+            # Crear un objeto Paragraph con el estilo_body
+            row[i] = Paragraph(row[i], style_body)
+
+    for row in data_investigativas:
+        for i, cell in enumerate(row):
+            # Convertir el contenido de la celda a una cadena de texto
+            row[i] = str(cell)
+            # Crear un objeto Paragraph con el estilo_body
+            row[i] = Paragraph(row[i], style_body)
+
+    for row in data_gestion:
+        for i, cell in enumerate(row):
+            # Convertir el contenido de la celda a una cadena de texto
+            row[i] = str(cell)
+            # Crear un objeto Paragraph con el estilo_body
+            row[i] = Paragraph(row[i], style_body)
+
+    # Agregar las tablas y los títulos a los elementos en el orden deseado
+    elements.append(Paragraph("Actividades Docentes", title_style))  # Utiliza el estilo personalizado para centrar el título
+    elements.append(Spacer(1, 12))
+    elements.append(table_docentes)
+    elements.append(Spacer(1, 24))
+    elements.append(Paragraph("Actividades Investigativas", title_style))  # Utiliza el estilo personalizado para centrar el título
+    elements.append(Spacer(1, 12))
+    elements.append(table_investigativas)
+    elements.append(Spacer(1, 24))
+    elements.append(Paragraph("Actividades Gestión", title_style))  # Utiliza el estilo personalizado para centrar el título
+    elements.append(Spacer(1, 12))
+    elements.append(table_gestion)
+    elements.append(Spacer(1, 24))
+
+    # Construir el PDF
+    doc.build(elements)
+    return response
+ 
+
+
+
 
 

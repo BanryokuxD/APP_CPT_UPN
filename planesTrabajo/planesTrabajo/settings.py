@@ -69,7 +69,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'db_cpt',    # Nombre de la base de datos
         'USER': 'root',               # Nombre de usuario de MySQL (puede ser 'root')
-        'PASSWORD': '#Casa.23pot#',  # Contraseña de MySQL
+        'PASSWORD': 'root',  # Contraseña de MySQL
         'HOST': 'localhost',          # Host de la base de datos (puede ser 'localhost')
         'PORT': '3306',    # Puerto de MySQL (por defecto, '3306')
     }

@@ -14,5 +14,6 @@ urlpatterns = [
     path('logout/', custom_logout, name='logout'),
     path('academic_management/', academic_management, name='academic_management'),
     path('registro_usuario/', views.academic_management, name='registro_usuario'),
+    path('generar-reporte-pdf/', views.generar_reporte_pdf, name='generar_reporte_pdf'),
     
 ]
