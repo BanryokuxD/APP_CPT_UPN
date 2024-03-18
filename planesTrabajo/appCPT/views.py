@@ -459,7 +459,7 @@ def generar_reporte_pdf(request):
     doc.build(elements)
     return response
  
-
+## asd
 
 
 
