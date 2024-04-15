@@ -70,9 +70,9 @@ class Departamento(models.Model):
     def __str__(self):
         return self.descripcion
 
-    class Meta:
-        managed = False
-        db_table = 'appcpt_departamento'
+    # class Meta:
+    #     managed = False
+    #     db_table = 'appcpt_departamento'
 
 class Facultad(models.Model):
     id = models.IntegerField(primary_key=True)
