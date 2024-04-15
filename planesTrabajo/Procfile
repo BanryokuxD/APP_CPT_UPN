@@ -1,1 +1,1 @@
-web: gunicorn planesTrabajo.wsgi
+web: py manage.py collectstatic && gunicorn planesTrabajo.wsgi
